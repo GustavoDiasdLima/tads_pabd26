@@ -21,12 +21,14 @@ create table departamento(
     numero smallint primary key, --vai de -32,768 ate 32,767
     nome varchar(50) unique,
     cpf_gerente char(11)
+    data_ini date not null
 
 );
 
 -- \i ./scripts/Aula02-Revisão DDL.sql
 -- ver todas as tabelas \dt
 
+/*
 -- Adicionar um novo atributo
 alter table departamento
 add column data_ini date; -- ADICIONAR é ADD
@@ -67,3 +69,21 @@ on delete no action
 on update cascade;
 
 -- ADICIONAR MAIS 2 RESTRIÇÔES CPF supervisor e CPF GERENTE
+
+alter table funcionario
+add constraint funcionario_cpf_sup_fk
+foreign key (cpf_supervisor)
+references funcionario(cpf)
+
+on delete set null
+on update cascade;
+
+alter table departamento
+add constraint departamento_cpf_gerente_fk
+foreign key (cpf_gerente)
+references funcionario(cpf)
+
+on delete set null
+on update cascade;
+*/
+-----------------------------------------
