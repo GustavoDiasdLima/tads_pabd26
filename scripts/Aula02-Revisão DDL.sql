@@ -20,7 +20,7 @@ Create table funcionario(
 create table departamento(
     numero smallint primary key, --vai de -32,768 ate 32,767
     nome varchar(50) unique,
-    cpf_gerente char(11)
+    cpf_gerente char(11),
     data_ini date not null
 
 );

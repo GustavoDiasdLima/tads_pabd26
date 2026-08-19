@@ -1,0 +1,8 @@
+     cpf     | pnome  | unome  |      email       |   endereco    | salario | data_nasc  | sexo | cpf_supervisor | numero_departamento 
+-------------+--------+--------+------------------+---------------+---------+------------+------+----------------+---------------------
+ 22233344455 | Joana  | Sales  | joana@tads.ifrn  | Parnamirim-RN | 8990.00 | 2000-11-01 | F    | 11122233344    |                    
+ 11122233344 | Joao   | Silva  | joao@tads.ifrn   | Natal-RN      | 9990.00 | 2000-01-01 | M    |                |                   1
+ 33344455566 | Jose   | Sousa  | jose@tads.ifrn   | Teresina-PI   | 7990.00 | 2002-12-01 | M    | 11122233344    |                   2
+ 44455566677 | Jobson | Soares | jobson@tads.ifrn |               | 6990.00 | 2003-03-03 | M    | 11122233344    |                   3
+(4 rows)
+
