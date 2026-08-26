@@ -87,6 +87,8 @@ where  salario = (
     select min(salario) from funcionario
 );
 
+-- 1. sudo service postgresql start
+-- 2. psql -h 127.0.0.1 -p 5432 -U admin -d pabd
 -- quais funcionarios recebem salario acima da media
 
 select 
@@ -124,12 +126,99 @@ select
     f.pnome || ' ' || f.unome funcionario,
     coalesce(s.pnome || ' ' || s.unome, 'Sem supervisor') supervisor
 from funcionario f
-left join funcionario s
+left join funcionario s  -- pegar todos os valores disponiveis para a coluna da esquerda
     on f.cpf_supervisor = s.cpf
 order by s.pnome nulls last, f.pnome, f.unome;
 
+select
+    f.pnome || ' ' || f.unome funcionario,
+    coalesce(s.pnome || ' ' || s.unome, 'Sem supervisor') supervisor
+from funcionario f
+right join funcionario s  -- pegar todos os valores disponiveis para a coluna da direita
+    on f.cpf_supervisor = s.cpf
+order by s.pnome nulls last, f.pnome, f.unome;
+
+-- mudanças para visualizar o full join
+update funcionario
+set numero_departamento = null
+where cpf = '44455566677';
+
+insert into departamento(numero, nome, cpf_gerente, data_ini)
+values (4, 'Marketing', null, current_date)
+
+select 
+    coalesce(d.nome, 'Sem departamento') departamento,
+    coalesce(f.pnome || ' ' || f.unome, 'Sem funcionário')  funcionario
+from departamento d
+full join funcionario f
+    on d.numero = f.numero_departamento
+order by departamento nulls last, funcionario nulls last;
 
 --exists, not exists
 
+--listar funcionarios que sao gerentes de algum departamento
+select 
+    f.pnome || ' ' || f.unome funcionario
+from funcionario f
+where exists (
+    select * 
+    from departamento d
+    where d.cpf_gerente = f.cpf
+)
+order by funcionario;
 
 --funcoes de agrupamento group by having
+
+-- qual o salario médio dos funcionarios em cada departamento?
+select
+    numero_departamento,
+    round(avg(salario), 2) Media_Salarial
+from funcionario
+group by numero_departamento
+order by numero_departamento;
+
+-- qual o salario médio dos funcionarios em cada departamento sem valores nulos WHERE
+
+select
+    numero_departamento,
+    round(avg(salario), 2) Media_Salarial
+from funcionario
+where numero_departamento is not null
+group by numero_departamento
+order by numero_departamento;
+
+-- qual o salario médio dos funcionarios em cada departamento sem valores nulos HAVING
+
+select
+    numero_departamento,
+    round(avg(salario), 2) Media_Salarial
+from funcionario
+group by numero_departamento
+having numero_departamento is not null
+order by numero_departamento;
+
+
+-- qual o numero de funcionarios que trabalham em cada departamento 
+select 
+    numero_departamento,
+    count(*)
+from funcionario f
+group by numero_departamento
+order by numero_departamento;
+
+-- listar numero e nome do departamento, quantidade de funcionarios
+-- e folha salarial
+
+select 
+    d.numero numero_departamento,
+    d.nome nome_departamento,
+
+    count(*) Quantidade_Funcionarios, -- quantidade funcionarios
+    round(avg(f.salario), 2) Media_Salarial, -- media salarial
+    sum(f.salario) Folha_Salarial -- folha salarial
+    
+from funcionario f
+join  departamento d
+    on f.numero_departamento = d.numero
+group by d.numero
+order by numero_departamento;
