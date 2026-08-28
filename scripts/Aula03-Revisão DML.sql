@@ -14,8 +14,8 @@ insert into funcionario( cpf, pnome, unome, email, salario, data_nasc, sexo) val
 -- returning cpf, pnome, unome, sexo;
 
 -- Remover
--- delete from funcionario
--- where cpf = '44455566677'
+ delete from funcionario
+ where cpf = '44455566677'
 -- returning cpf, pnome, unome;
 -- 1. sudo service postgresql start
 -- 2. psql -h 127.0.0.1 -p 5432 -U admin -d pabd

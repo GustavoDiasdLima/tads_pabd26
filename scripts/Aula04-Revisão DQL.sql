@@ -222,3 +222,6 @@ join  departamento d
     on f.numero_departamento = d.numero
 group by d.numero
 order by numero_departamento;
+
+-- 1. sudo service postgresql start
+-- 2. psql -h 127.0.0.1 -p 5432 -U admin -d pabd
