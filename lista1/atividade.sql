@@ -140,3 +140,29 @@ select orders.id, users.name -- tabela orders e users vai retornar o id dos pedi
 from orders
 inner join users -- relaciona as 2 tabelas
     on orders.user_id = user_id;
+--8.Liste todos os usuários e seus pedidos, inclusive usuários sem pedidos.
+select users.name, orders.id
+from users
+left join orders -- juntar infos de 2 ou + tabelas 
+    on users.id = orders.user_id;
+--9.Liste todos os usuários (id, nome e email) que realizaram pelo menos um pedido.
+select users.id, users.name, users.email
+from users
+inner join orders --retorna somente quando existe correspondência
+    on users.id = orders.user_id; -- Relaciona as tabelas por essas duas colunas e pegua o id do usuário e procura esse mesmo valor no user_id do pedido.
+--10.Liste produtos que nunca foram vendidos.
+select products.id, products.name, products.price
+from products
+left join orders_products
+    on products.id = orders_products.product_id
+where orders_products.product_id is null;
+--11.Liste usuários que nunca realizaram pedidos.
+select users.id, users.name, users.email
+from users
+left join orders
+    on users.id = orders.user_id
+where orders.user_id is null;
+--12.Liste os produtos com preço acima da média em ordem decrescente.
+--13.Liste a quantidade de pedidos realizados por cada usuário.
+--14.Listar os três produtos mais vendidos.
+--15.Gerar um relatório com: usuários, quantidade de pedidos e valor total comprado.
