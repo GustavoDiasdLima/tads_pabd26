@@ -68,3 +68,35 @@ returning id, produto, estoque;
 
 insert into v_products_in_stock(produto, valor, estoque)
 values ('produto qualquer, 99, 0'); --\d+ nomE DA VIew
+--Materialized views
+--relatorio de produtos mais vendidos.
+drop views if exists v_top_products;
+create view v_top_products as
+select
+    p.id,
+    p.name produto,
+    sum(op.quantity) unid_vendidas
+    sum(op.quantity * op.unit_price) total_vendido
+from products p
+join orders_products op on op.product_id = p.id
+join orders o on o.id = op.order_id
+where o.status <> 'canceled'
+group by p.id, p.name
+with data; --padrao
+--with no data; -- sem dados
+--explain analyze select * from v_top_products order by total_vendido desc limit3;
+
+--mv para mostrar o total vendido por mes
+-- preferir deixar os nomes das variaveis view em ingles, tabelas etc mas codigo nativo
+drop materialized view if exists mv_monthly_sales;
+create materialized view mv_monthly_sales as
+select
+    to_char(date_trunc('month', o.order_date), 'YYY-MM') mes
+    sum(o.total) total_vendido
+from orders o
+where o.status <> 'canceled'
+group by mes;
+with no data;
+--select id, orer_dade at time zone 'America/Fortaleza' from orders order by order_date;
+
+
